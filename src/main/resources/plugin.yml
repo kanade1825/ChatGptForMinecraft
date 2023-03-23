@@ -4,5 +4,4 @@ main: net.kanade1825.litematica.chatgptforminecraft.ChatGptForMinecraft
 api-version: 1.19
 commands:
   chatgpt:
-    description:chatgpt wo minecraft de tukaeruyouni suru tameno komanndo
-
+    description: chatgpt wo nihonngode tukaeruyounisuru komanndo
