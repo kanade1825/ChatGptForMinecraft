@@ -1,0 +1,4 @@
+name: ChatGptForMinecraft
+version: '${project.version}'
+main: net.kanade1825.litematica.chatgptforminecraft.ChatGptForMinecraft
+api-version: 1.19
