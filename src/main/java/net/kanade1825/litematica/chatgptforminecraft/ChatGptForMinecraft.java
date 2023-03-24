@@ -9,7 +9,7 @@ public final class ChatGptForMinecraft extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGptResponse());
+        Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse(this));
         getLogger().info("loadied chatgpt for minecraft!");
     }
 

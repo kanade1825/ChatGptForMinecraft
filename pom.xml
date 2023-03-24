@@ -63,6 +63,9 @@
         </repository>
     </repositories>
 
+
+
+
     <dependencies>
         <dependency>
             <groupId>io.papermc.paper</groupId>
@@ -75,5 +78,22 @@
             <artifactId>spigot</artifactId>
             <version>1.15.2-R0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lilittlecat</groupId>
+            <artifactId>chatgpt</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
+
+
+
+
+
+
+
 </project>
