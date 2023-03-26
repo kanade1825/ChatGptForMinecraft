@@ -66,6 +66,7 @@
 
 
 
+
     <dependencies>
         <dependency>
             <groupId>io.papermc.paper</groupId>
@@ -88,12 +89,7 @@
             <artifactId>chatgpt</artifactId>
             <version>1.0.0</version>
         </dependency>
+
     </dependencies>
-
-
-
-
-
-
 
 </project>

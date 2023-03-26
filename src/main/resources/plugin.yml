@@ -1,7 +1,9 @@
-name: ChatGptForMinecraft
+name: ChatGPTForMinecraft
 version: '${project.version}'
-main: net.kanade1825.litematica.chatgptforminecraft.ChatGptForMinecraft
+main: net.kanade1825.litematica.chatgptforminecraft.ChatGPTForMinecraft
 api-version: 1.19
 commands:
+  chatgptnpc:
+    description: Spawn NPC
   chatgpt:
     description: chatgpt wo nihonngode tukaeruyounisuru komanndo

@@ -4,12 +4,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
-public final class ChatGptForMinecraft extends JavaPlugin {
+public final class ChatGPTForMinecraft extends JavaPlugin {
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse(this));
+        Objects.requireNonNull(getCommand("chatgptnpc")).setExecutor(new ChatGPTOriginalMob());
         getLogger().info("loadied chatgpt for minecraft!");
     }
 

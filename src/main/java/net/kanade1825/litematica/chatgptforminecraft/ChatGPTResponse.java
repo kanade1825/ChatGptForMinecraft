@@ -1,6 +1,7 @@
 package net.kanade1825.litematica.chatgptforminecraft;
 
 import com.lilittlecat.chatgpt.offical.ChatGPT;
+import okhttp3.OkHttpClient;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,13 +10,21 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class ChatGPTResponse implements CommandExecutor {
 
-    private final ChatGptForMinecraft chatGptForMinecraft;
+    private final ChatGPTForMinecraft chatGptForMinecraft;
 
-    public ChatGPTResponse(ChatGptForMinecraft chatGptForMinecraft) {
+    private final ChatGPT chatGPT ;
+
+    public ChatGPTResponse(ChatGPTForMinecraft chatGptForMinecraft) {
         this.chatGptForMinecraft = chatGptForMinecraft;
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(3,TimeUnit.DAYS)
+                .callTimeout(3,TimeUnit.DAYS)
+                .connectTimeout(3, TimeUnit.DAYS).build();
+        chatGPT = new ChatGPT("",okHttpClient);
     }
 
 
@@ -28,12 +37,13 @@ public class ChatGPTResponse implements CommandExecutor {
 
         String request = strings[0];
 
-        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
-            ChatGPT chatGPT = new ChatGPT("");
-            return chatGPT.ask(request);
-        });
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> chatGPT.ask(request));
+
         Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft,()->{try {
             String response = future.get();
+            if (response == null){
+                response = "Response is null ! please try again";
+            }
             commandSender.sendMessage(response);
         } catch (InterruptedException | ExecutionException e) {
             System.out.println("An error occurred: " + e.getMessage());
