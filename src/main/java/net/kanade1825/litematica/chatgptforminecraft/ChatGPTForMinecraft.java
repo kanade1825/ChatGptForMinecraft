@@ -15,6 +15,7 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
 
 
         getLogger().info("loadied chatgpt for minecraft!");
+
     }
 
     @Override

@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 
 public class ChatGPTTalkNPC implements Listener {
     private ChatGPT chatGPT ;
+    ChatGPTForMinecraft plugin = new ChatGPTForMinecraft();
 
 
 
