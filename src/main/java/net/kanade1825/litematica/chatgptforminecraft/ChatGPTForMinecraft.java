@@ -1,10 +1,13 @@
 package net.kanade1825.litematica.chatgptforminecraft;
 
+import com.lilittlecat.chatgpt.offical.ChatGPT;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
 public final class ChatGPTForMinecraft extends JavaPlugin {
+    public ChatGPT chatGPT;
+
 
     @Override
     public void onEnable() {

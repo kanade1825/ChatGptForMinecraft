@@ -9,9 +9,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class ChatGPTTalkNPC implements Listener {
-    private ChatGPT chatGPT ;
+    private final ChatGPT chatGPT;
 
-    private ChatGPTForMinecraft chatGptForMinecraft;
+    private final ChatGPTForMinecraft chatGptForMinecraft;
+
+    public ChatGPTTalkNPC(ChatGPTForMinecraft plugin){
+        this.chatGptForMinecraft = plugin;
+        this.chatGPT = plugin.chatGPT;
+    }
 
 
 

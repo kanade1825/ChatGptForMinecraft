@@ -16,7 +16,6 @@ public class ChatGPTResponse implements CommandExecutor {
 
     private final ChatGPTForMinecraft chatGptForMinecraft;
 
-    private final ChatGPT chatGPT ;
 
     public ChatGPTResponse(ChatGPTForMinecraft chatGptForMinecraft) {
         this.chatGptForMinecraft = chatGptForMinecraft;
@@ -24,12 +23,9 @@ public class ChatGPTResponse implements CommandExecutor {
                 .readTimeout(3,TimeUnit.DAYS)
                 .callTimeout(3,TimeUnit.DAYS)
                 .connectTimeout(3, TimeUnit.DAYS).build();
-        chatGPT = new ChatGPT("",okHttpClient);
+        chatGptForMinecraft.chatGPT = new ChatGPT("",okHttpClient);
     }
 
-    public ChatGPT getChatGPT() {
-        return chatGPT;
-    }
 
 
 
@@ -42,7 +38,7 @@ public class ChatGPTResponse implements CommandExecutor {
 
         String request = strings[0];
 
-        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> chatGPT.ask(request));
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> chatGptForMinecraft.chatGPT.ask(request));
 
         Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft,()->{try {
             String response = future.get();
