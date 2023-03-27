@@ -27,6 +27,11 @@ public class ChatGPTResponse implements CommandExecutor {
         chatGPT = new ChatGPT("",okHttpClient);
     }
 
+    public ChatGPT getChatGPT() {
+        return chatGPT;
+    }
+
+
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {

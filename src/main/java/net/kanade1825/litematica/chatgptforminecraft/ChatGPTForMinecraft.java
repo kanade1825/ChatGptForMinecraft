@@ -11,6 +11,9 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
         // Plugin startup logic
         Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse(this));
         Objects.requireNonNull(getCommand("chatgptnpc")).setExecutor(new ChatGPTOriginalMob());
+        getServer().getPluginManager().registerEvents(new ChatGPTTalkNPC(),this);
+
+
         getLogger().info("loadied chatgpt for minecraft!");
     }
 
