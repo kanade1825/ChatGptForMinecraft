@@ -12,16 +12,13 @@ public class ChatGPTTalkNPC implements Listener {
     private final ChatGPT chatGPT;
 
     private final ChatGPTForMinecraft chatGptForMinecraft;
-
     public ChatGPTTalkNPC(ChatGPTForMinecraft plugin){
         this.chatGptForMinecraft = plugin;
         this.chatGPT = plugin.chatGPT;
     }
 
-
-
     @EventHandler
-    public boolean onNPCRightClick(NPCRightClickEvent event) {
+    public void onNPCRightClick(NPCRightClickEvent event) {
         Player player = event.getClicker();
         NPC npc = event.getNPC();
         if (npc.getName().equals("ChatGPT")) {
@@ -34,7 +31,6 @@ public class ChatGPTTalkNPC implements Listener {
                 }
             });
             }
-        return false;
     }
 
 }
