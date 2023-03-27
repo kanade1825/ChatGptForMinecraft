@@ -10,8 +10,8 @@ import org.bukkit.event.Listener;
 
 public class ChatGPTTalkNPC implements Listener {
     private ChatGPT chatGPT ;
-    ChatGPTForMinecraft plugin = new ChatGPTForMinecraft();
 
+    private ChatGPTForMinecraft chatGptForMinecraft;
 
 
 
@@ -20,8 +20,7 @@ public class ChatGPTTalkNPC implements Listener {
         Player player = event.getClicker();
         NPC npc = event.getNPC();
         if (npc.getName().equals("ChatGPT")) {
-            ChatGPTForMinecraft plugin = new ChatGPTForMinecraft();
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+            Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
                 @Override
                 public void run() {
                     String answer = chatGPT.ask("こんにちは！");
