@@ -9,8 +9,5 @@
         <module name="ChatGptForMinecraft" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ChatGptForMinecraft" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

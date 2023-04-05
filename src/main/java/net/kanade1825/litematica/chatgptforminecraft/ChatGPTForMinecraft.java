@@ -1,18 +1,23 @@
 package net.kanade1825.litematica.chatgptforminecraft;
 
-import com.lilittlecat.chatgpt.offical.ChatGPT;
+
+import com.theokanning.openai.OpenAiApi;
+import com.theokanning.openai.OpenAiService;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
 public final class ChatGPTForMinecraft extends JavaPlugin {
-    public ChatGPT chatGPT;
+
+    //多分グローバル変数ってやつじゃなーい？
+    public OpenAiService service;
+    public OpenAiApi chatGPT;
 
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse(this));
+        Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse());
         Objects.requireNonNull(getCommand("chatgptnpc")).setExecutor(new ChatGPTOriginalMob());
         getServer().getPluginManager().registerEvents(new ChatGPTTalkNPC(this),this);
         getLogger().info("loadied chatgpt for minecraft!");

@@ -1,7 +1,7 @@
 package net.kanade1825.litematica.chatgptforminecraft;
 
-import com.lilittlecat.chatgpt.offical.ChatGPT;
-import okhttp3.OkHttpClient;
+
+import com.theokanning.openai.OpenAiService;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,24 +10,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+
+
+import com.theokanning.openai.completion.CompletionRequest;
+
 
 public class ChatGPTResponse implements CommandExecutor {
 
-    private final ChatGPTForMinecraft chatGptForMinecraft;
+    ChatGPTForMinecraft chatGptForMinecraft;
 
-
-    public ChatGPTResponse(ChatGPTForMinecraft chatGptForMinecraft) {
-        this.chatGptForMinecraft = chatGptForMinecraft;
-        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(3,TimeUnit.DAYS)
-                .callTimeout(3,TimeUnit.DAYS)
-                .connectTimeout(3, TimeUnit.DAYS).build();
-        chatGptForMinecraft.chatGPT = new ChatGPT("",okHttpClient);
+    public OpenAiService getChatGptForMinecraft() {
+        chatGptForMinecraft.service = new OpenAiService("");
+        return chatGptForMinecraft.service;
     }
-
-
-
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -38,7 +33,15 @@ public class ChatGPTResponse implements CommandExecutor {
 
         String request = strings[0];
 
-        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> chatGptForMinecraft.chatGPT.ask(request));
+        final var completionRequest = CompletionRequest.builder()
+                .model("text-davinci-003")
+                .prompt(request)
+                .build();
+
+
+
+
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> String.valueOf(chatGptForMinecraft.service.createCompletion(completionRequest)));
 
         Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft,()->{try {
             String response = future.get();
