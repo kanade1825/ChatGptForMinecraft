@@ -1,7 +1,7 @@
 package net.kanade1825.litematica.chatgptforminecraft;
 
 
-import com.theokanning.openai.OpenAiService;
+import com.theokanning.openai.completion.CompletionRequest;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,17 +12,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 
-import com.theokanning.openai.completion.CompletionRequest;
-
-
 public class ChatGPTResponse implements CommandExecutor {
+    private final ChatGPTForMinecraft plugin;
 
-    ChatGPTForMinecraft chatGptForMinecraft;
-
-    public OpenAiService getChatGptForMinecraft() {
-        chatGptForMinecraft.service = new OpenAiService("");
-        return chatGptForMinecraft.service;
+    public ChatGPTResponse(ChatGPTForMinecraft plugin) {
+        this.plugin = plugin;
     }
+
+
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -38,20 +35,26 @@ public class ChatGPTResponse implements CommandExecutor {
                 .prompt(request)
                 .build();
 
-
-
-
-        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> String.valueOf(chatGptForMinecraft.service.createCompletion(completionRequest)));
-
-        Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft,()->{try {
-            String response = future.get();
-            if (response == null){
-                response = "Response is null ! please try again";
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                return String.valueOf(plugin.getService().createCompletion(completionRequest).getChoices().get(0).getText());
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+                return null;
             }
-            commandSender.sendMessage(response);
-        } catch (InterruptedException | ExecutionException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }});
+        });
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                String response = future.get();
+                if (response == null){
+                    response = "Response is null ! please try again";
+                }
+                commandSender.sendMessage(response);
+            } catch (InterruptedException | ExecutionException e) {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
+        });
 
         return false;
     }

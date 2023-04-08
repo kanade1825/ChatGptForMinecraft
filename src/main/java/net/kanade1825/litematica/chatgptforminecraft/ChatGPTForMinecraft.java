@@ -16,8 +16,10 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        String apiKey = "";
+        service = new OpenAiService(apiKey);
         // Plugin startup logic
-        Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse());
+        Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse(this));
         Objects.requireNonNull(getCommand("chatgptnpc")).setExecutor(new ChatGPTOriginalMob());
         getServer().getPluginManager().registerEvents(new ChatGPTTalkNPC(this),this);
         getLogger().info("loadied chatgpt for minecraft!");
@@ -28,5 +30,9 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         getLogger().info("stopped chatgpt for minecraft!");
+    }
+
+    public OpenAiService getService() {
+        return service;
     }
 }

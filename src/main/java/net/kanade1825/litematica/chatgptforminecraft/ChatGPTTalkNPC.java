@@ -32,7 +32,7 @@ public class ChatGPTTalkNPC implements Listener {
             Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
                 @Override
                 public void run() {
-                    String answer = String.valueOf(chatGptForMinecraft.service.createCompletion(completionRequest));
+                    String answer = String.valueOf(chatGptForMinecraft.service.createCompletion(completionRequest).getChoices().get(0).getText());
                     player.sendMessage(answer);
                     // ここに非同期処理を記述する
                 }
