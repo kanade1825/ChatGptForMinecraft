@@ -5,6 +5,7 @@ import com.theokanning.openai.OpenAiApi;
 import com.theokanning.openai.OpenAiService;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.time.Duration;
 import java.util.Objects;
 
 public final class ChatGPTForMinecraft extends JavaPlugin {
@@ -17,7 +18,7 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
     @Override
     public void onEnable() {
         String apiKey = "";
-        service = new OpenAiService(apiKey);
+        service = new OpenAiService(apiKey, Duration.ofMinutes(5));
         // Plugin startup logic
         Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse(this));
         Objects.requireNonNull(getCommand("chatgptnpc")).setExecutor(new ChatGPTOriginalMob());
