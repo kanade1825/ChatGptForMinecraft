@@ -43,8 +43,6 @@ public class ChatGPTResponse implements CommandExecutor {
         chatMessages.add(new ChatMessage("user",request));
 
 
-
-
         final var completionRequest = ChatCompletionRequest.builder()
                 .model("gpt-3.5-turbo")
                 .messages(chatMessages)
