@@ -8,7 +8,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,6 +31,8 @@ public class ChatGPTTalkNPC implements Listener {
     List<ChatMessage> chatMessages2 = new LinkedList<>();
     List<ChatMessage> chatMessages3 = new LinkedList<>();
     List<ChatMessage> chatMessages4 = new LinkedList<>();
+    List<ChatMessage> chatMessages5 = new LinkedList<>();
+    List<ChatMessage> chatMessages6 = new LinkedList<>();
 
     @EventHandler
     public void onNPCRightClick(NPCRightClickEvent event) {
@@ -34,21 +41,34 @@ public class ChatGPTTalkNPC implements Listener {
         Player player = event.getClicker();
         NPC npc = event.getNPC();
         if (npc.getName().equals("ChatGPT")) {
-            chatMessages.add(new ChatMessage("user",ChatGPTPrompt.Wagner));
             Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
                 @Override
                 public void run() {
+                    JSONParser parser = new JSONParser();
+                    try (FileReader reader = new FileReader("Wagner.json")) {
+                        // JSONファイルの読み込み
+                        JSONObject jsonObject = (JSONObject) parser.parse(reader);
 
-                    chatMessages.add(new ChatMessage("user","こんにちは！"));
+                        // "Wagner" の値を取得
+                         String Wagner = (String) jsonObject.get("Wagner");
 
-                    final var completionRequest = ChatCompletionRequest.builder()
-                            .model("gpt-3.5-turbo")
-                            .messages(chatMessages)
-                            .build();
+                         chatMessages.add(new ChatMessage("user",Wagner));
+
+                         chatMessages.add(new ChatMessage("user","こんにちは！"));
+
+                         final var completionRequest = ChatCompletionRequest.builder()
+                                .model("gpt-3.5-turbo")
+                                .messages(chatMessages)
+                                .build();
 
 
-                    String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest).getChoices().get(0).getMessage().getContent());
-                    player.sendMessage(answer);
+                         String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest).getChoices().get(0).getMessage().getContent());
+                         player.sendMessage(answer);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     // ここに非同期処理を記述する
                 }
             });
@@ -136,6 +156,50 @@ public class ChatGPTTalkNPC implements Listener {
 
 
                     String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest4).getChoices().get(0).getMessage().getContent());
+                    player.sendMessage(answer);
+                    // ここに非同期処理を記述する
+                }
+            });
+        }
+        else if (npc.getName().equals("Raisers")){
+            chatMessages5.add(new ChatMessage("user",ChatGPTPrompt.Raisers));
+
+            Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
+                @Override
+                public void run() {
+
+
+                    chatMessages5.add(new ChatMessage("user","こんにちは！"));
+
+                    final var completionRequest5 = ChatCompletionRequest.builder()
+                            .model("gpt-3.5-turbo")
+                            .messages(chatMessages5)
+                            .build();
+
+
+                    String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest5).getChoices().get(0).getMessage().getContent());
+                    player.sendMessage(answer);
+                    // ここに非同期処理を記述する
+                }
+            });
+        }
+        else if (npc.getName().equals("Marshier")){
+            chatMessages6.add(new ChatMessage("user",ChatGPTPrompt.Marshier));
+
+            Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
+                @Override
+                public void run() {
+
+
+                    chatMessages6.add(new ChatMessage("user","こんにちは！"));
+
+                    final var completionRequest6 = ChatCompletionRequest.builder()
+                            .model("gpt-3.5-turbo")
+                            .messages(chatMessages6)
+                            .build();
+
+
+                    String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest6).getChoices().get(0).getMessage().getContent());
                     player.sendMessage(answer);
                     // ここに非同期処理を記述する
                 }

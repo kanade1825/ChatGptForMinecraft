@@ -20,6 +20,8 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
         String apiKey = "";
         service = new OpenAiService(apiKey, Duration.ofMinutes(5));
         // Plugin startup logic
+        getCommand("test").setExecutor(new Test());
+        Objects.requireNonNull(getCommand("serveraccess")).setExecutor(new ServerAccess(this));
         Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse(this));
         Objects.requireNonNull(getCommand("chatgptnpc")).setExecutor(new ChatGPTOriginalMob());
         getServer().getPluginManager().registerEvents(new ChatGPTTalkNPC(this),this);

@@ -1,6 +1,5 @@
 package net.kanade1825.litematica.chatgptforminecraft;
 
-
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import org.bukkit.Bukkit;
