@@ -14,197 +14,55 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class ChatGPTTalkNPC implements Listener {
 
-
     private final ChatGPTForMinecraft chatGptForMinecraft;
+    private final Map<String, String> npcData = new HashMap<>();
 
     public ChatGPTTalkNPC(ChatGPTForMinecraft chatGptForMinecraft) {
         this.chatGptForMinecraft = chatGptForMinecraft;
+        loadNpcData();
     }
 
-    List<ChatMessage> chatMessages = new LinkedList<>();
-    List<ChatMessage> chatMessages1 = new LinkedList<>();
-    List<ChatMessage> chatMessages2 = new LinkedList<>();
-    List<ChatMessage> chatMessages3 = new LinkedList<>();
-    List<ChatMessage> chatMessages4 = new LinkedList<>();
-    List<ChatMessage> chatMessages5 = new LinkedList<>();
-    List<ChatMessage> chatMessages6 = new LinkedList<>();
+    private void loadNpcData() {
+        List<String> npcNames = List.of("Wagner", "Mirai", "Ellis", "Rina", "Rasvaan", "Raisers", "Marshier");
+
+        for (String npcName : npcNames) {
+            try (FileReader reader = new FileReader(npcName + ".json")) {
+                JSONObject jsonObject = (JSONObject) new JSONParser().parse(reader);
+                String data = (String) jsonObject.get(npcName);
+                npcData.put(npcName, data);
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @EventHandler
     public void onNPCRightClick(NPCRightClickEvent event) {
-
-
         Player player = event.getClicker();
         NPC npc = event.getNPC();
-        if (npc.getName().equals("ChatGPT")) {
-            Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
-                @Override
-                public void run() {
-                    JSONParser parser = new JSONParser();
-                    try (FileReader reader = new FileReader("Wagner.json")) {
-                        // JSONファイルの読み込み
-                        JSONObject jsonObject = (JSONObject) parser.parse(reader);
+        String npcName = npc.getName();
 
-                        // "Wagner" の値を取得
-                         String Wagner = (String) jsonObject.get("Wagner");
+        if (npcData.containsKey(npcName)) {
+            Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, () -> {
+                List<ChatMessage> chatMessages = new LinkedList<>();
+                chatMessages.add(new ChatMessage("user", npcData.get(npcName)));
+                chatMessages.add(new ChatMessage("user", "こんにちは！"));
 
-                         chatMessages.add(new ChatMessage("user",Wagner));
+                final var completionRequest = ChatCompletionRequest.builder()
+                        .model("gpt-3.5-turbo")
+                        .messages(chatMessages)
+                        .build();
 
-                         chatMessages.add(new ChatMessage("user","こんにちは！"));
-
-                         final var completionRequest = ChatCompletionRequest.builder()
-                                .model("gpt-3.5-turbo")
-                                .messages(chatMessages)
-                                .build();
-
-
-                         String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest).getChoices().get(0).getMessage().getContent());
-                         player.sendMessage(answer);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    // ここに非同期処理を記述する
-                }
-            });
-            }
-        else if (npc.getName().equals("Mirai")){
-            chatMessages1.add(new ChatMessage("user",ChatGPTPrompt.Mirai));
-
-            Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
-                @Override
-                public void run() {
-
-
-                    chatMessages1.add(new ChatMessage("user","こんにちは！"));
-
-                    final var completionRequest1 = ChatCompletionRequest.builder()
-                            .model("gpt-3.5-turbo")
-                            .messages(chatMessages1)
-                            .build();
-
-
-                    String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest1).getChoices().get(0).getMessage().getContent());
-                    player.sendMessage(answer);
-                    // ここに非同期処理を記述する
-                }
-            });
-        }
-        else if (npc.getName().equals("Ellis")){
-            chatMessages2.add(new ChatMessage("user",ChatGPTPrompt.Ellis));
-
-            Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
-                @Override
-                public void run() {
-
-
-                    chatMessages2.add(new ChatMessage("user","こんにちは！"));
-
-                    final var completionRequest2 = ChatCompletionRequest.builder()
-                            .model("gpt-3.5-turbo")
-                            .messages(chatMessages2)
-                            .build();
-
-
-                    String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest2).getChoices().get(0).getMessage().getContent());
-                    player.sendMessage(answer);
-                    // ここに非同期処理を記述する
-                }
-            });
-        }
-        else if (npc.getName().equals("Rina")){
-            chatMessages3.add(new ChatMessage("user",ChatGPTPrompt.Rina));
-
-            Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
-                @Override
-                public void run() {
-
-
-                    chatMessages3.add(new ChatMessage("user","こんにちは！"));
-
-                    final var completionRequest3 = ChatCompletionRequest.builder()
-                            .model("gpt-3.5-turbo")
-                            .messages(chatMessages3)
-                            .build();
-
-
-                    String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest3).getChoices().get(0).getMessage().getContent());
-                    player.sendMessage(answer);
-                    // ここに非同期処理を記述する
-                }
-            });
-        }
-        else if (npc.getName().equals("Rasvaan")){
-            chatMessages4.add(new ChatMessage("user",ChatGPTPrompt.Rasvaan));
-
-            Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
-                @Override
-                public void run() {
-
-
-                    chatMessages4.add(new ChatMessage("user","こんにちは！"));
-
-                    final var completionRequest4 = ChatCompletionRequest.builder()
-                            .model("gpt-3.5-turbo")
-                            .messages(chatMessages4)
-                            .build();
-
-
-                    String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest4).getChoices().get(0).getMessage().getContent());
-                    player.sendMessage(answer);
-                    // ここに非同期処理を記述する
-                }
-            });
-        }
-        else if (npc.getName().equals("Raisers")){
-            chatMessages5.add(new ChatMessage("user",ChatGPTPrompt.Raisers));
-
-            Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
-                @Override
-                public void run() {
-
-
-                    chatMessages5.add(new ChatMessage("user","こんにちは！"));
-
-                    final var completionRequest5 = ChatCompletionRequest.builder()
-                            .model("gpt-3.5-turbo")
-                            .messages(chatMessages5)
-                            .build();
-
-
-                    String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest5).getChoices().get(0).getMessage().getContent());
-                    player.sendMessage(answer);
-                    // ここに非同期処理を記述する
-                }
-            });
-        }
-        else if (npc.getName().equals("Marshier")){
-            chatMessages6.add(new ChatMessage("user",ChatGPTPrompt.Marshier));
-
-            Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, new Runnable() {
-                @Override
-                public void run() {
-
-
-                    chatMessages6.add(new ChatMessage("user","こんにちは！"));
-
-                    final var completionRequest6 = ChatCompletionRequest.builder()
-                            .model("gpt-3.5-turbo")
-                            .messages(chatMessages6)
-                            .build();
-
-
-                    String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest6).getChoices().get(0).getMessage().getContent());
-                    player.sendMessage(answer);
-                    // ここに非同期処理を記述する
-                }
+                String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest).getChoices().get(0).getMessage().getContent());
+                player.sendMessage(answer);
             });
         }
     }
 }
-
