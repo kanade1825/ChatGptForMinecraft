@@ -8,12 +8,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.*;
 import java.net.Socket;
 
-public class ServerAccess implements CommandExecutor {
+public class GetTalkFile implements CommandExecutor {
     private final ChatGPTForMinecraft chatGptForMinecraft;
     private static final String SERVER_NAME = "localhost";
     private static final int PORT = 8001;
 
-    public ServerAccess(ChatGPTForMinecraft chatGptForMinecraft) {
+    public GetTalkFile(ChatGPTForMinecraft chatGptForMinecraft) {
         this.chatGptForMinecraft = chatGptForMinecraft;
     }
 
@@ -29,17 +29,25 @@ public class ServerAccess implements CommandExecutor {
                     String request = "Hello, Server!";
                     writer.println(request);
 
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        response.append(line);
+                    // Save the received JSON file to a specified relative directory
+                    String directory = "H:\\paper1.19.3\\"; // Specify the relative directory to save the JSON file
+                    String fileName = "TalkData.json"; // Specify the file name for the received JSON file
+                    File receivedFile = new File(directory + fileName);
+                    try (FileOutputStream fos = new FileOutputStream(receivedFile)) {
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        InputStream input = clientSocket.getInputStream();
+
+                        while ((bytesRead = input.read(buffer)) != -1) {
+                            fos.write(buffer, 0, bytesRead);
+                        }
                     }
 
-                    // レスポンスをプレイヤーに送信
+                    // Notify the player about the received JSON file
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            commandSender.sendMessage("Server Response: " + response.toString());
+                            commandSender.sendMessage("JSONファイルを受信しました: " + directory + fileName);
                         }
                     }.runTask(chatGptForMinecraft);
                 } catch (IOException e) {

@@ -5,7 +5,9 @@ api-version: 1.19
 commands:
   test:
     description: test command
-  serveraccess:
+  sendtalkfile:
+    description: send talk file
+  gettalkfile:
     description: access chatgpt for minecraft server
   chatgptnpc:
     description: Spawn NPC
