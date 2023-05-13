@@ -5,13 +5,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.*;
-import java.net.Socket;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class GetTalkFile implements CommandExecutor {
     private final ChatGPTForMinecraft chatGptForMinecraft;
-    private static final String SERVER_NAME = "localhost";
-    private static final int PORT = 8001;
+    private static final String SERVER_URL = "http://localhost:8080/json";
 
     public GetTalkFile(ChatGPTForMinecraft chatGptForMinecraft) {
         this.chatGptForMinecraft = chatGptForMinecraft;
@@ -22,26 +26,21 @@ public class GetTalkFile implements CommandExecutor {
         new BukkitRunnable() {
             @Override
             public void run() {
-                try (Socket clientSocket = new Socket(SERVER_NAME, PORT);
-                     BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                     PrintWriter writer = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream()), true)
-                ) {
-                    String request = "Hello, Server!";
-                    writer.println(request);
+                try {
+                    URL url = new URL(SERVER_URL);
+                    HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+                    httpCon.setDoOutput(true);
+                    httpCon.setRequestMethod("GET");
+                    httpCon.setRequestProperty("Content-Type", "application/json; utf-8");
+                    httpCon.setRequestProperty("Accept", "application/json");
 
-                    // Save the received JSON file to a specified relative directory
+                    InputStream in = httpCon.getInputStream();
+
                     String directory = "H:\\paper1.19.3\\"; // Specify the relative directory to save the JSON file
                     String fileName = "TalkData.json"; // Specify the file name for the received JSON file
                     File receivedFile = new File(directory + fileName);
-                    try (FileOutputStream fos = new FileOutputStream(receivedFile)) {
-                        byte[] buffer = new byte[1024];
-                        int bytesRead;
-                        InputStream input = clientSocket.getInputStream();
 
-                        while ((bytesRead = input.read(buffer)) != -1) {
-                            fos.write(buffer, 0, bytesRead);
-                        }
-                    }
+                    Files.copy(in, receivedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
                     // Notify the player about the received JSON file
                     new BukkitRunnable() {
