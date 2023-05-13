@@ -76,7 +76,7 @@ public class ChatGPTTalkNPC implements Listener {
 
 
                 final var completionRequest = ChatCompletionRequest.builder()
-                        .model("gpt-3.5-turbo")
+                        .model("gpt-4")
                         .messages(chatMessages)
                         .build();
 

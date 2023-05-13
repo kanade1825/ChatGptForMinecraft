@@ -3,81 +3,67 @@ package net.kanade1825.litematica.chatgptforminecraft;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
-import java.net.Socket;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-public class SendTalkFile extends JavaPlugin implements CommandExecutor {
-    private static final String SERVER_IP = "localhost";
-    private static final int SERVER_PORT = 8001;
+public class SendTalkFile implements CommandExecutor {
+    private final ChatGPTForMinecraft chatGptForMinecraft;
+    private static final String SERVER_URL = "http://localhost:8080/json";
 
+    public SendTalkFile(ChatGPTForMinecraft chatGptForMinecraft) {
+        this.chatGptForMinecraft = chatGptForMinecraft;
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                try (Socket socket = new Socket(SERVER_IP, SERVER_PORT);
-                     InputStream input = socket.getInputStream();
-                     OutputStream output = socket.getOutputStream()) {
+                String fileName = "TalkData.json"; // 送信するJSONファイル名を指定
+                File file = new File(fileName);
+                if (!file.exists() || file.length() == 0) {
+                    commandSender.sendMessage("送信するJSONファイルが存在しないか、空です: " + fileName);
+                    return;
+                }
 
-                    getLogger().info("サーバーに接続しました: " + socket.getRemoteSocketAddress());
+                try {
+                    String jsonString = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+                    URL url = new URL(SERVER_URL);
+                    HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+                    httpCon.setDoOutput(true);
+                    httpCon.setRequestMethod("POST");
+                    httpCon.setRequestProperty("Content-Type", "application/json; utf-8");
+                    httpCon.setRequestProperty("Accept", "application/json");
 
-                    boolean success = false;
-                    int retryCount = 0;
-
-                    while (!success && retryCount < 5) {
-                        success = sendJsonFile(output, input);
-
-                        if (!success) {
-                            getLogger().info("再送を試みます...");
-                            retryCount++;
-                            Thread.sleep(3000);
-                        }
+                    try (OutputStream os = httpCon.getOutputStream()) {
+                        byte[] input = jsonString.getBytes("utf-8");
+                        os.write(input, 0, input.length);
                     }
 
-                    if (success) {
-                        getLogger().info("JSONファイルの送信に成功しました");
-                    } else {
-                        getLogger().info("JSONファイルの送信に失敗しました");
-                    }
-                } catch (IOException | InterruptedException e) {
+                    int responseCode = httpCon.getResponseCode();
+                    commandSender.sendMessage("Response Code: " + responseCode);
+
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                // Notify the player about the sent JSON file
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        commandSender.sendMessage("JSONファイルを送信しました: " + fileName);
+                    }
+                }.runTask(chatGptForMinecraft);
+
             }
-        }.runTaskAsynchronously(this);
+        }.runTaskAsynchronously(chatGptForMinecraft);
 
         return true;
-    }
-
-    private boolean sendJsonFile(OutputStream output, InputStream input) throws IOException {
-        Path jsonFilePath = Paths.get("H:\\ChatGPTForMinecraftClientSide\\src\\main\\resources\\talk.json");
-        byte[] fileData = Files.readAllBytes(jsonFilePath);
-
-        if (fileData.length > 0) {
-            output.write(fileData);
-            output.flush();
-            getLogger().info("JSONファイルをサーバーに送信: " + jsonFilePath);
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            String serverResponse = reader.readLine();
-
-            if ("SUCCESS".equals(serverResponse)) {
-                return true;
-            } else if ("EMPTY_DATA_RECEIVED".equals(serverResponse)) {
-                getLogger().info("サーバーが空のデータを受信しました");
-            } else {
-                getLogger().info("サーバーから予期しない応答がありました: " + serverResponse);
-            }
-        } else {
-            getLogger().info("空のJSONファイルが検出されました: " + jsonFilePath);
-        }
-
-        return false;
     }
 }

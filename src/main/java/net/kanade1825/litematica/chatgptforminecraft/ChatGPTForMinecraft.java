@@ -3,7 +3,6 @@ package net.kanade1825.litematica.chatgptforminecraft;
 
 import com.theokanning.openai.OpenAiApi;
 import com.theokanning.openai.OpenAiService;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Duration;
@@ -22,7 +21,7 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
         service = new OpenAiService(apiKey, Duration.ofMinutes(5));
         // Plugin startup logic
         getCommand("test").setExecutor(new Test());
-        getCommand("sendtalkfile").setExecutor(new SendTalkFile());
+        getCommand("sendtalkfile").setExecutor(new SendTalkFile(this));
         Objects.requireNonNull(getCommand("gettalkfile")).setExecutor(new GetTalkFile(this));
         Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse(this));
         Objects.requireNonNull(getCommand("chatgptnpc")).setExecutor(new ChatGPTOriginalMob());
