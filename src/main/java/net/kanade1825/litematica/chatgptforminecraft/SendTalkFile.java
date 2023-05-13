@@ -15,6 +15,7 @@ import java.nio.file.Files;
 public class SendTalkFile implements CommandExecutor {
     private final ChatGPTForMinecraft chatGptForMinecraft;
     private static final String SERVER_URL = "http://localhost:8080/json";
+    private static final String API_KEY = "3075f92a-78bd-47ff-9e04-a3ff1be7ae29"; // TODO: あなたのAPIキーに置き換えてください
 
     public SendTalkFile(ChatGPTForMinecraft chatGptForMinecraft) {
         this.chatGptForMinecraft = chatGptForMinecraft;
@@ -40,6 +41,7 @@ public class SendTalkFile implements CommandExecutor {
                     httpCon.setRequestMethod("POST");
                     httpCon.setRequestProperty("Content-Type", "application/json; utf-8");
                     httpCon.setRequestProperty("Accept", "application/json");
+                    httpCon.setRequestProperty("Api-Key", API_KEY); // APIキーをリクエストヘッダーに追加
 
                     try (OutputStream os = httpCon.getOutputStream()) {
                         byte[] input = jsonString.getBytes("utf-8");
