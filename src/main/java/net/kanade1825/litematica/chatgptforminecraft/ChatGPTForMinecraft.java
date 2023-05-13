@@ -17,7 +17,7 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        String apiKey = "";
+        String apiKey = "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";
         service = new OpenAiService(apiKey, Duration.ofMinutes(5));
         // Plugin startup logic
         getCommand("test").setExecutor(new Test());
