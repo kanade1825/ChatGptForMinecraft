@@ -34,7 +34,7 @@ public class ChatGPTTalkNPC implements Listener {
     private void loadNpcData() {
         List<String> npcNames = List.of("Wagner", "Mirai", "Ellis", "Rina", "Rasvaan", "Raisers", "Marshier");
 
-        System.out.println(1);
+
 
         for (String npcName : npcNames) {
 
@@ -56,33 +56,19 @@ public class ChatGPTTalkNPC implements Listener {
 
     @EventHandler
     public void onNPCRightClick(NPCRightClickEvent event) {
-
         Player player = event.getClicker();
-
         NPC npc = event.getNPC();
-
         String npcName = npc.getName();
-
-
         if (npcData.containsKey(npcName)) {
-
             Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, () -> {
-
                 List<ChatMessage> chatMessages = new LinkedList<>();
-
                 chatMessages.add(new ChatMessage("user", npcData.get(npcName)));
-
                 chatMessages.add(new ChatMessage("user", "こんにちは！"));
-
-
                 final var completionRequest = ChatCompletionRequest.builder()
                         .model("gpt-4")
                         .messages(chatMessages)
                         .build();
-
-
                 String answer = String.valueOf(chatGptForMinecraft.getService().createChatCompletion(completionRequest).getChoices().get(0).getMessage().getContent());
-
                 player.sendMessage(answer);
             });
         }

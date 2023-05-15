@@ -3,8 +3,6 @@ version: '${project.version}'
 main: net.kanade1825.litematica.chatgptforminecraft.ChatGPTForMinecraft
 api-version: 1.19
 commands:
-  test:
-    description: test command
   sendtalkfile:
     description: send talk file
   gettalkfile:

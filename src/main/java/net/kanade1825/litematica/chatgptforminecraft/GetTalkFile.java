@@ -1,9 +1,9 @@
 package net.kanade1825.litematica.chatgptforminecraft;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,38 +23,31 @@ public class GetTalkFile implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(SERVER_URL);
-                    HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-                    httpCon.setDoOutput(true);
-                    httpCon.setRequestMethod("GET");
-                    httpCon.setRequestProperty("Content-Type", "application/json; utf-8");
-                    httpCon.setRequestProperty("Accept", "application/json");
 
-                    InputStream in = httpCon.getInputStream();
+        //非同期
+        Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft,() -> {
+            try {
+                URL url = new URL(SERVER_URL);
+                HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+                httpCon.setDoOutput(true);
+                httpCon.setRequestMethod("GET");
+                httpCon.setRequestProperty("Content-Type", "application/json; utf-8");
+                httpCon.setRequestProperty("Accept", "application/json");
 
-                    String directory = "H:\\paper1.19.3\\"; // Specify the relative directory to save the JSON file
-                    String fileName = "TalkData.json"; // Specify the file name for the received JSON file
-                    File receivedFile = new File(directory + fileName);
+                InputStream in = httpCon.getInputStream();
 
-                    Files.copy(in, receivedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                String directory = "H:\\paper1.19.3\\"; // Specify the relative directory to save the JSON file
+                String fileName = "TalkData.json"; // Specify the file name for the received JSON file
+                File receivedFile = new File(directory + fileName);
 
-                    // Notify the player about the received JSON file
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            commandSender.sendMessage("JSONファイルを受信しました: " + directory + fileName);
-                        }
-                    }.runTask(chatGptForMinecraft);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Files.copy(in, receivedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                commandSender.sendMessage("JSONファイルを受信しました: " + directory + fileName);
+
+                // Notify the player about the received JSON file
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }.runTaskAsynchronously(chatGptForMinecraft);
-
+        });
         return true;
     }
 }

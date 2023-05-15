@@ -1,7 +1,6 @@
 package net.kanade1825.litematica.chatgptforminecraft;
 
 
-import com.theokanning.openai.OpenAiApi;
 import com.theokanning.openai.OpenAiService;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,7 +11,6 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
 
     //多分グローバル変数ってやつじゃなーい？
     public OpenAiService service;
-    public OpenAiApi chatGPT;
 
 
     @Override
@@ -20,7 +18,6 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
         String apiKey = "";
         service = new OpenAiService(apiKey, Duration.ofMinutes(5));
         // Plugin startup logic
-        getCommand("test").setExecutor(new Test());
         getCommand("sendtalkfile").setExecutor(new SendTalkFile(this));
         Objects.requireNonNull(getCommand("gettalkfile")).setExecutor(new GetTalkFile(this));
         Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse(this));
