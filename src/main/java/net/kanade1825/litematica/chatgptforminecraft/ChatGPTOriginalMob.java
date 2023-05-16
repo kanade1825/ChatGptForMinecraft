@@ -17,11 +17,12 @@ public class ChatGPTOriginalMob implements CommandExecutor {
             sender.sendMessage("プレイヤーからのみ実行可能です。");
             return false;
         }
-
-        if (args[0] == null){
+        else if (args[0] == null){
             sender.sendMessage("Please NPCname!");
             return false;
         }
+
+
 
         String npcname = args[0];
 

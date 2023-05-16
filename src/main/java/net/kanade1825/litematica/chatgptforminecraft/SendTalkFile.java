@@ -16,7 +16,6 @@ import java.nio.file.Files;
 
 public class SendTalkFile implements CommandExecutor {
     private final ChatGPTForMinecraft chatGptForMinecraft;
-    private static final String SERVER_URL = "http://localhost:8080/json";
 
 
     public SendTalkFile(ChatGPTForMinecraft chatGptForMinecraft) {
@@ -35,7 +34,7 @@ public class SendTalkFile implements CommandExecutor {
 
             try {
                 String jsonString = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
-                URL url = new URL(SERVER_URL);
+                URL url = new URL(ChatGPTForMinecraft.Server_URL);
                 HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
                 httpCon.setDoOutput(true);
                 httpCon.setRequestMethod("POST");

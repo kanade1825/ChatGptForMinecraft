@@ -15,11 +15,13 @@ import java.nio.file.StandardCopyOption;
 
 public class GetTalkFile implements CommandExecutor {
     private final ChatGPTForMinecraft chatGptForMinecraft;
-    private static final String SERVER_URL = "http://localhost:8080/json";
 
     public GetTalkFile(ChatGPTForMinecraft chatGptForMinecraft) {
         this.chatGptForMinecraft = chatGptForMinecraft;
     }
+
+
+
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -27,7 +29,7 @@ public class GetTalkFile implements CommandExecutor {
         //非同期
         Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft,() -> {
             try {
-                URL url = new URL(SERVER_URL);
+                URL url = new URL(ChatGPTForMinecraft.Server_URL);
                 HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
                 httpCon.setDoOutput(true);
                 httpCon.setRequestMethod("GET");

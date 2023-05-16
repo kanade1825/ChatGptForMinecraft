@@ -12,6 +12,13 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
     //多分グローバル変数ってやつじゃなーい？
     public OpenAiService service;
 
+    //変数定義
+
+    public static final String Server_URL = "http://localhost:8080/json";
+
+
+
+
 
     @Override
     public void onEnable() {
