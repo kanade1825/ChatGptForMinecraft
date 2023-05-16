@@ -25,6 +25,7 @@ public class SendTalkFile implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft,() -> {
+
             String fileName = "TalkData.json"; // 送信するJSONファイル名を指定
             File file = new File(fileName);
             if (!file.exists() || file.length() == 0) {
