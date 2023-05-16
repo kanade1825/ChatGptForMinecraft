@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -35,6 +36,15 @@ public class ChatGPTTalkNPC implements Listener {
                 Player player = event.getClicker();
                 NPC npc = event.getNPC();
                 String npcName = npc.getName();
+
+
+
+                File file = new File(npcName + ".json");
+                if (!file.exists() || file.isDirectory()) {
+                    Bukkit.getLogger().info(npcName+"というキャラクターの構成ファイルは見つかりませんでした。" +
+                            "\nもし貴方が構成ファイルを持っていても少なくともこのシステムが想定している検知場所にはありません。");
+                    return;
+                }
 
                 JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(npcName + ".json"));;
 

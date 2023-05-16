@@ -17,9 +17,6 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
     public static final String Server_URL = "http://localhost:8080/json";
 
 
-
-
-
     @Override
     public void onEnable() {
         String apiKey = "";
