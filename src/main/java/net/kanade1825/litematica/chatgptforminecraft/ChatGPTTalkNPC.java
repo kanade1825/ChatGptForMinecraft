@@ -12,9 +12,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,8 +45,7 @@ public class ChatGPTTalkNPC implements Listener {
                     return;
                 }
 
-                JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(npcName + ".json"));;
-
+                JSONObject jsonObject = (JSONObject) parser.parse(new InputStreamReader(new FileInputStream(npcName + ".json"), StandardCharsets.UTF_8));
 
                 List<ChatMessage> chatMessages = new LinkedList<>();
                 chatMessages.add(new ChatMessage("user", (String) jsonObject.get(npcName) ));
