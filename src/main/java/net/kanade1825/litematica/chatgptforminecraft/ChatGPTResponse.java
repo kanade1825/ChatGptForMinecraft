@@ -22,7 +22,6 @@ public class ChatGPTResponse implements CommandExecutor {
     }
 
 
-
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (strings.length < 1) {
@@ -34,12 +33,12 @@ public class ChatGPTResponse implements CommandExecutor {
 
         // LinkedList<>()がpythonでいうところのchatMessages = []
 
-        List <ChatMessage> chatMessages = new LinkedList<>();
+        List<ChatMessage> chatMessages = new LinkedList<>();
 
 
         // チャットメッセージのリストの中に、新しいチャットメッセージを入れてる
 
-        chatMessages.add(new ChatMessage("user",request));
+        chatMessages.add(new ChatMessage("user", request));
 
 
         final var completionRequest = ChatCompletionRequest.builder()
@@ -59,7 +58,7 @@ public class ChatGPTResponse implements CommandExecutor {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 String response = future.get();
-                if (response == null){
+                if (response == null) {
                     response = "Response is null ! please try again";
                 }
                 commandSender.sendMessage(response);

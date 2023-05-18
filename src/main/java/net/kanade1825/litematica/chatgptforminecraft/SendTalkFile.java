@@ -24,9 +24,18 @@ public class SendTalkFile implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft,() -> {
+        Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft, () -> {
 
-            String fileName = "TalkData.json"; // 送信するJSONファイル名を指定
+
+            if (strings.length != 1) {
+                commandSender.sendMessage("Please Character name!");
+                return;
+            }
+
+            String characternamae = strings[0];
+
+
+            String fileName = "plugins/ChatGPTForMinecraft/TalkData/" + characternamae + "TalkData.json"; // 送信するJSONファイル名を指定
             File file = new File(fileName);
             if (!file.exists() || file.length() == 0) {
                 commandSender.sendMessage("送信するJSONファイルが存在しないか、空です: " + fileName);
@@ -44,7 +53,7 @@ public class SendTalkFile implements CommandExecutor {
 
 
                 try (OutputStream os = httpCon.getOutputStream()) {
-                    byte[] input = jsonString.getBytes("utf-8");
+                    byte[] input = jsonString.getBytes(StandardCharsets.UTF_8);
                     os.write(input, 0, input.length);
                 }
 

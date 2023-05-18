@@ -9,24 +9,23 @@ import java.util.Objects;
 
 public final class ChatGPTForMinecraft extends JavaPlugin {
 
-    //多分グローバル変数ってやつじゃなーい？
-    public OpenAiService service;
-
-    //変数定義
-
     public static final String Server_URL = "http://localhost:8080/json";
 
+    //変数定義
+    //多分グローバル変数ってやつじゃなーい？
+    public OpenAiService service;
 
     @Override
     public void onEnable() {
         String apiKey = "";
         service = new OpenAiService(apiKey, Duration.ofMinutes(5));
         // Plugin startup logic
+        Objects.requireNonNull(getCommand(("chatgpt-setup"))).setExecutor(new SetUP(this));
         Objects.requireNonNull(getCommand("sendtalkfile")).setExecutor(new SendTalkFile(this));
         Objects.requireNonNull(getCommand("gettalkfile")).setExecutor(new GetTalkFile(this));
         Objects.requireNonNull(getCommand("chatgpt")).setExecutor(new ChatGPTResponse(this));
         Objects.requireNonNull(getCommand("chatgptnpc")).setExecutor(new ChatGPTOriginalMob());
-        getServer().getPluginManager().registerEvents(new ChatGPTTalkNPC(this),this);
+        getServer().getPluginManager().registerEvents(new ChatGPTTalkNPC(this), this);
         getLogger().info("loadied chatgpt for minecraft!");
     }
 
