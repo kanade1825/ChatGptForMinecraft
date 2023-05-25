@@ -69,9 +69,8 @@ public class SetUP implements CommandExecutor {
                     File file = new File(path.toFile(), filename);
 
                     // ディレクトリが存在しない場合は作成
-                    if (!file.getParentFile().exists()) {
-                        file.getParentFile().mkdirs();
-                    }
+
+                    file.mkdirs();
 
                     // FileWriterオブジェクトを作成して空のJSONファイルを生成
                     FileWriter fileWriter = new FileWriter(file);
