@@ -11,11 +11,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class ChatGPTOriginalMob implements CommandExecutor {
-    private final String skinname = "ewogICJ0aW1lc3RhbXAiIDogMTY4NTAxMzI0NTQ2NiwKICAicHJvZmlsZUlkIiA6ICIzY2YzYjgzNzhkYjc0ZDZlYmIxMDFjMDYzZmQ1MjVjNyIsCiAgInByb2ZpbGVOYW1lIiA6ICJSeW9yaTE2IiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzJhYTRhNzIyNmQ4YjNkZWE1YTY0M2ZkYTVhODZhYmI3MDA2YWIzYmQ4ZjJmMzFjOWI2Y2RjMTI1NGNiYWVhZTkiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==" ;
-    private final String signeture = "lWmvfpJapo8zBRSwfmQJgULn1yiCy38sbPdlNMLex9XglixTrHoGPI1+ntispziDTmHPdGWhWGLI0aM9BtnL8F/YCsZYrFySLXI1umycFL9aIJJHrGK46Af3mfsZRFaR7YTUN0E+DTXlASY+fshrshCOU3cIA+4DYQ3nl5kYv5ux4QMC78Yt3KylCS+kbw8oaUl42++d9lK6/EqWeJd4RMsfijbh/p+q4LdpfCDZ1qdN/CC2ZJkxXzwfwFde7cs3KVj40SlUlilC3U6CMPEU9+n5hiO3TGGxoYejOQQ8iybkvdJYxXAo8cY4UtjW5/cnalvWXEoRK5RA/bhhFJoYzd6pft+S9axhhTsYbb/b4XUAKnEWIw54A0q1WFwUMxj2w5IGqLjFGDtRrO5mUiy9TQsJNHT7eXP+CFxDuYwUX5RKMhhMbP/jg1E/xbCQvNBXQHIjQ9yOLOtTBrGSb2FweKBM7XNXDSEqRc87w314jYXrUMk0jihQxyrMWzd1bMbjkOhV6fgPv0zv3ZINXTiFB89UPW2/XJowLvR158xX5YscZCf/fGI3oMyCeNI6/13W2qfKIDwDp4AgrifqzlBkEcTSoyR6lmCVzdWhWpe5m+IYOl00bpjb5ZqPDf4o5yljfOA6f4eu5kl0+S2Mrb24oDraD0xEXniu9/IK0o2/twk=" ;
-    private final String data =  "http://textures.minecraft.net/texture/2aa4a7226d8b3dea5a643fda5a86abb7006ab3bd8f2f31c9b6cdc1254cbaeae9";
-
-
 
 
     @Override
@@ -35,7 +30,13 @@ public class ChatGPTOriginalMob implements CommandExecutor {
         var npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcname);
         var SkinTrait =  npc.getOrAddTrait(SkinTrait.class);
 
-        SkinTrait.setSkinPersistent(skinname,signeture,data);
+        //MineSkinのTexture Signatureってとこ（上から三番目）をコピー
+        String signeture = "SqT+PiUp7yIcHBqLYqC1eJjhF1GovAwYVOE0uyJ5/Mk91Za/sUoFhdJOR2tBGnRg1QWbSSk9++KhbHZbLu5M0urue6ubn0wXdmY/eCG+80u8Lt982LniqpBQaNDAngNMZRTA47dVwHifBUkHKG7uNCqP+yr2fGSnzosBo36y6XfBPmDgMy3yXZn/e1u8rFjLUvkxQ2W07xX+TMvYOBGRz95GM3DZ4CPXX3WRlwBNh2n4QxjWdNAjqZYjUwKSNVpP0jtrRsihI6JF/JXi2f9GQ9Gm30jaab6pkQWvaqUx0xFbt9aSuNhnsvfVfXQ46cq3bEWXJ+Li5CDc+dMY6YKABSWy3xlDE1H70hr9lEFUvH/WoARgggicj483Jd894r6+RSz6/c3KTl/8sqWR7i4OQeCYzEL/4nHg4PO4EthegY8cGHShlqftdESvc38Lf1ZCGjDgls/WGVZ3wFdUspjrk8y6Bk0DVi0AaF6IvzrU2brdwv9KjJyOvSTQlL9tvVYMspin9OtotGgPLjHOEO/3KxaJLazL61PXYCSKraivpKV3Kmf03h3QbmwZHUIKM9Oxr8aPoH4nRXbo03UihsffvvAigzLt2xgXXL3lydre6LgNHva75peXM4F+R8zSM9TpTlBbO9Zl17ztnirQAYVh6jX/DMRUIa22zsRRFvMEMRo=";
+        //一番上に表示されてる名前をコピー
+        String skinname = "kanade1825";
+        //Texture Valueってやつ（上から二番目のやつ）をコピー
+        String data = "ewogICJ0aW1lc3RhbXAiIDogMTY4NTAyMDg3MjQ2OCwKICAicHJvZmlsZUlkIiA6ICI5OTRlY2JmMzdlM2U0NzcwOTc4YmMyMTQ4NTRmYTcwOSIsCiAgInByb2ZpbGVOYW1lIiA6ICJrYW5hZGUxODI1IiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2YyYjNlOWEyM2JlZDMxNWU3OTQwMWFkMGM3OWY2YmU1YTcyYTkyOTQ5NWU5MjczNTRmMjE2MmMwZGU5ZjNjODkiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==";
+        SkinTrait.setSkinPersistent(skinname, signeture, data);
 
         // NPCをプレイヤーの位置にスポーンさせる
         npc.spawn(location);
