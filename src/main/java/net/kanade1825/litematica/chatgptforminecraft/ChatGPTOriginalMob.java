@@ -2,6 +2,7 @@ package net.kanade1825.litematica.chatgptforminecraft;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.trait.SkinTrait;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,6 +18,11 @@ import java.io.IOException;
 import org.json.JSONObject;
 
 public class ChatGPTOriginalMob implements CommandExecutor {
+    private final ChatGPTForMinecraft chatGptForMinecraft;
+
+    public ChatGPTOriginalMob(ChatGPTForMinecraft chatGptForMinecraft) {
+        this.chatGptForMinecraft = chatGptForMinecraft;
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, Command cmd, @NotNull String label, String[] args) {
@@ -24,6 +30,8 @@ public class ChatGPTOriginalMob implements CommandExecutor {
             sender.sendMessage("プレイヤーからのみ実行可能です。");
             return false;
         }
+
+
 
         String npcname = args[0];
 
@@ -61,4 +69,47 @@ public class ChatGPTOriginalMob implements CommandExecutor {
 
         return true;
     }
+
+    public boolean SummonMob(CommandSender sender ,String commandname){
+        Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft,() ->{
+            String npcname = commandname;
+
+            String jsonFilePath = "plugins/ChatGPTForMinecraft/CharacterData/SkinData/"+ npcname + "SkinData.json";  // Assume the JSON file path is passed as the second argument
+
+            // Read the JSON file and get the skin data
+            String data = "";
+            String skinname = "";
+            String signeture = "";
+            try {
+                String content = new String(Files.readAllBytes(Paths.get(jsonFilePath)));
+                JSONObject json = new JSONObject(content);
+                data = json.getString("TextureValue");
+                skinname = json.getString("SkinName");
+                signeture = json.getString("Signeture");
+            } catch (IOException e) {
+                e.printStackTrace();
+                sender.sendMessage("ファイルの読み込みに失敗しました。");
+                return ;
+            }
+
+            //プレイヤーの位置を取得
+            Player player = (Player) sender;
+            Location location = player.getLocation();
+
+            // CitizensAPIを使用してNPCを作成する
+            var npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcname);
+            var SkinTrait =  npc.getOrAddTrait(SkinTrait.class);
+
+            SkinTrait.setSkinPersistent(skinname, signeture, data);
+
+            // NPCをプレイヤーの位置にスポーンさせる
+            npc.spawn(location);
+            player.sendMessage("NPCが出現しました。");
+
+        });
+        return true;
+
+    }
+
+
 }
