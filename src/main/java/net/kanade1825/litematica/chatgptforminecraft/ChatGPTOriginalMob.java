@@ -2,7 +2,6 @@ package net.kanade1825.litematica.chatgptforminecraft;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.trait.SkinTrait;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -70,8 +69,7 @@ public class ChatGPTOriginalMob implements CommandExecutor {
         return true;
     }
 
-    public boolean SummonMob(CommandSender sender ,String commandname){
-        Bukkit.getScheduler().runTaskAsynchronously(chatGptForMinecraft,() ->{
+    public boolean SummonMob(CommandSender sender , String commandname){
             String npcname = commandname;
 
             String jsonFilePath = "plugins/ChatGPTForMinecraft/CharacterData/SkinData/"+ npcname + "SkinData.json";  // Assume the JSON file path is passed as the second argument
@@ -89,7 +87,7 @@ public class ChatGPTOriginalMob implements CommandExecutor {
             } catch (IOException e) {
                 e.printStackTrace();
                 sender.sendMessage("ファイルの読み込みに失敗しました。");
-                return ;
+                return false;
             }
 
             //プレイヤーの位置を取得
@@ -105,8 +103,6 @@ public class ChatGPTOriginalMob implements CommandExecutor {
             // NPCをプレイヤーの位置にスポーンさせる
             npc.spawn(location);
             player.sendMessage("NPCが出現しました。");
-
-        });
         return true;
 
     }

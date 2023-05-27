@@ -3,6 +3,9 @@ package net.kanade1825.litematica.chatgptforminecraft;
 
 import com.theokanning.openai.service.OpenAiService;
 import dev.jorel.commandapi.*;
+import dev.jorel.commandapi.arguments.ArgumentSuggestions;
+import dev.jorel.commandapi.arguments.StringArgument;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Duration;
@@ -39,20 +42,31 @@ public final class ChatGPTForMinecraft extends JavaPlugin {
         CommandAPI.onEnable();
 
         new CommandAPICommand("chatgptnpc")
-
-                .withSubcommand(new CommandAPICommand("Ellis"))
+                .withArguments(
+                        //StringArgumentで引数の数と、名前を指定
+                        //そのあとの部分でサジェスト（予測変換）の設定を行っている。
+                        new StringArgument("Name")
+                                .replaceSuggestions(ArgumentSuggestions.strings(
+                            "Ellis",
+                                        "Mirai",
+                                        "Raisers",
+                                        "Rasvaan",
+                                        "Rina",
+                                        "Wagner",
+                                        "Marshier"))
+                        )
                 .executes((sender, args) -> {
-                    var ChatGPTPriginalMob =  new ChatGPTOriginalMob(this);
-                    ChatGPTPriginalMob.SummonMob(sender, String.valueOf(args));
+
+                    var name = args.get(0).toString();
+                    if (name == null){
+                        sender.sendMessage("引数が有りません。");
+                        return;
+                    }
+                        var ChatGPTPriginalMob =  new ChatGPTOriginalMob(this);
+                        //argsの0番目（最初）（argsはリストっぽい）に名前が入っている。
+                        //senderはコマンド送信者
+                        ChatGPTPriginalMob.SummonMob(sender, (args.get(0)).toString());
                 })
-
-                .withSubcommand(new CommandAPICommand("Marshier"))
-                .withSubcommand(new CommandAPICommand("Mirai"))
-                .withSubcommand(new CommandAPICommand("Raisers"))
-                .withSubcommand(new CommandAPICommand("Rasvaan"))
-                .withSubcommand(new CommandAPICommand("Rina"))
-                .withSubcommand(new CommandAPICommand("Wagner"))
-
                 .withPermission(CommandPermission.OP)
                 .register();
 
