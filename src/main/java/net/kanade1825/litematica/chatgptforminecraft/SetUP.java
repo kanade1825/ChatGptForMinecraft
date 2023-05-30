@@ -34,6 +34,8 @@ public class SetUP implements CommandExecutor {
 
             Path path2 = Paths.get("plugins/ChatGPTForMinecraft/CharacterData/SkinData");
 
+            Path path3 = Paths.get("plugins/ChatGPTForMinecraft/API");
+
             try {
                 if (!Files.exists(path)) {
                     Files.createDirectories(path);
@@ -67,6 +69,18 @@ public class SetUP implements CommandExecutor {
                 }
             } catch (IOException e) {
                 commandSender.sendMessage("Unable to create directory at " + path2);
+                e.printStackTrace();
+            }
+
+            try {
+                if (!Files.exists(path3)) {
+                    Files.createDirectories(path3);
+                    commandSender.sendMessage("Directory created at " + path3);
+                } else {
+                    commandSender.sendMessage("Directory already exists at " + path3);
+                }
+            } catch (IOException e) {
+                commandSender.sendMessage("Unable to create directory at " + path3);
                 e.printStackTrace();
             }
 
@@ -139,24 +153,38 @@ public class SetUP implements CommandExecutor {
             String WagnerSigneture = "H5mAapyekMdYs8yWva/qXLmFug7UGSr71pLNlG8OaKZVD+GK0PFpnjW266Dn0ud/9i95mjrJcqWVsjn9Pbpbi5WV6xwU6TmcQvOEXUX5tVhkZ7ePH73mXnza5gU2W8H1LrJReX3AYXHwDwgCGzsB4LWZIvPTg72P0IkycnISPzcMnwK0LI0DiFt3k8mFgEuX54Uq7WAfO/SJETbBk86zpSg/ZnRGo2QszGzcSzuaRt0h021bFR41f7LCmfnixkm0A461j4ZhDO9KRcCV/H7uCuHQ5xKdQKsddett19lk0mojIxBjbPcFU4jdoNARwAN8I75WpQXBOQrDMeeAPwmI/0fqvWa4NQVX5klH1286iWebWcCrirNYChojESvnygYHwlbvZ0m7ZmcNWvYrUd1mVf3kwgzzjRUZWgwMG5JLf6md/iWMkEJaBWsZrziBA3jhigMP7Yz/M8fjX8hLUUqvkAqNorX6mrUskXGXfYY5fIwjwaQk5jT0tXhRQW+RXioUaJIMdtjmV5xKu0oyXGNDYG58qFppjNNL8erZQ2kHZoFLi8qOa406s6USYEb+b13bBh8ZYL2O8QKs4TkzPPhaipRImHR+AslwEFWWOCeW5ErRRHd1CcNFETaRfEHWeNd+prXPPgQ12IU8TdECorQQFdoBDrSJJSdJ9lGdioe+bVY=";
             String WagnerTextureValue = "ewogICJ0aW1lc3RhbXAiIDogMTY4NTA0ODg3Nzc2MywKICAicHJvZmlsZUlkIiA6ICI5NTE3OTkxNjljYzE0MGY1OGM2MmRjOGZmZTU3NjBiZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJZdWFyaWciLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWM4NGNmOTkzYTZkMDczNDJjYjA4NGEwOTQ2YTJmNDY5MDAzMjg4ZjkxODk4YzZjNDc5NWZlMWJlNzExMWM4YiIKICAgIH0KICB9Cn0=";
 
+            Map<String, String> dataMap = new HashMap<>();
+
+
+            dataMap.put("EllisTalkData.json", "[{\"column1\":\"Ellis\",\"column2\":\"こんにちは！君が来てくれるのを待ってたよ！うれしいな♪ 今日は何をしましょうかね？＾＾\",\"id\":9},{\"column1\":\"Ellis\",\"column2\":\"こんにちは！君が来てくれるのを待ってたよ！うれしいな♪ 今日はどんなお話をしましょうか？\",\"id\":10},{\"column1\":\"Ellis\",\"column2\":\"こんにちは！君が来てくれるのを待ってたよ！うれしいな♪ 今日は何をしましょうか？アドバイスが必要なら、何でも聞いてね！私、ちょっとおせっかいなんだけど、君が喜んでくれると嬉しいんだよ！絶対だよ♪\",\"id\":11},{\"column1\":\"Ellis\",\"column2\":\"こんにちは！君が来てくれるのを待ってたよ！うれしいな♪ 今日は何をするのかな？一緒に楽しい時間を過ごそうね♪\",\"id\":48}]");
+            dataMap.put("MarshierTalkData.json", "[{\"column1\":\"Marshier\",\"column2\":\"ちょっと待って、あんた！あたしも一緒に話すよ！どんなこと話すの？楽しそうだね！\",\"id\":9},{\"column1\":\"Marshier\",\"column2\":\"あんた、こんにちわー！今日はどんな冒険が待ってるのかな？一緒に楽しもうね！\",\"id\":17},{\"column1\":\"Marshier\",\"column2\":\"あんた！ちょうど会いたかったんだよ！一緒におしゃべりしようよ！\",\"id\":18}]");
+            dataMap.put("MiraiTalkData.json", "[{\"column1\":\"Mirai\",\"column2\":\"こんにちは！キミは今日どんなことをして過ごそうかな？オレはちょっと街を散歩してみようかな～。\",\"id\":12},{\"column1\":\"Mirai\",\"column2\":\"こんにちは！キミ、元気そうでなによりだね。また街を散策してるのかな？\",\"id\":63},{\"column1\":\"Mirai\",\"column2\":\"こんにちは！元気そうで何よりだよ。最近、何か面白いことあったかな？ オレはいつものようにのんびりと過ごしてるさ。\",\"id\":64},{\"column1\":\"Mirai\",\"column2\":\"こんにちは！キミ、今日はどんな冒険がしたいのかな？オレ、一緒に何か楽しいことをしようって思ってたんだ。どうだろう？\",\"id\":65}]");
+            dataMap.put("RaisersTalkData.json", "[{\"column1\":\"Raisers\",\"column2\":\"こんにちは、旅人さん！今日もいいお天気だね！一緒に楽しいこと探しに行こう！どんな冒険が待ってるんだろう？ワクワクするね！\",\"id\":9},{\"column1\":\"Raisers\",\"column2\":\"旅人さん、こんにちは！今日もいい天気だね！さあ、一緒に街を散策しよう！ボクが案内するよ！\",\"id\":10},{\"column1\":\"Raisers\",\"column2\":\"こんにちは、旅人さん！今日もいい天気だね！一緒に街を探検しようよ！\",\"id\":11},{\"column1\":\"Raisers\",\"column2\":\"こんにちは、旅人さん！今日もいい天気だね！一緒に街を散策しよう！\",\"id\":12},{\"column1\":\"Raisers\",\"column2\":\"こんにちは、旅人さん！今日も元気そうで嬉しいね！一緒に楽しいことを見つけようよ！\",\"id\":13}]");
+            dataMap.put("RasvaanTalkData.json", "[{\"column1\":\"Rasvaan\",\"column2\":\"やあ、旅人。何か用か？ 用がないなら、さっさと行けよ。\",\"id\":9},{\"column1\":\"Rasvaan\",\"column2\":\"やあ、旅人。この街に迷い込んだのか? 用があるなら早く言え。用がなければ、邪魔だぜ。\",\"id\":10},{\"column1\":\"Rasvaan\",\"column2\":\"あぁ、旅人か。こんにちはって言われてもなぁ、何か用か? そうでなきゃ他を当たってくれよ。\",\"id\":11},{\"column1\":\"Rasvaan\",\"column2\":\"やあ、旅人。何か用か？ 俺はラズヴァーンだ。この街の住人だぜ。\",\"id\":12},{\"column1\":\"Rasvaan\",\"column2\":\"やあ、旅人。この街に何しに来たんだぜ? オレはラズヴァーンだ。どうせまた無駄な用事なんだろうが、話すだけなら聞いてやるぞ。\",\"id\":13}]");
+            dataMap.put("RinaTalkData.json", "[{\"column1\":\"Rina\",\"column2\":\"こんにちは、あなた！今日もいい天気だね♪ 何か楽しいことしたいんだけど、何かいいアイデアあるかな？\",\"id\":9},{\"column1\":\"Rina\",\"column2\":\"こんにちは、あなた！今日日はいい天気だね♪ 何して遊ぼうかな？ どんなプランがあるの？教えて教えて！☆\",\"id\":10},{\"column1\":\"Rina\",\"column2\":\"こんにちは、あなた！今日もいい天気だね♪ どんな一日になるか楽しみだな！\",\"id\":41}]");
+            dataMap.put("WagnerTalkData.json", "[{\"column1\":\"Wagner\",\"column2\":\"ん、なんだ？お前、何か用があるのか？\",\"id\":9},{\"column1\":\"Wagner\",\"column2\":\"ん、なんだ？ お前は何をしに来たんだ？ 早く言え！\",\"id\":10},{\"column1\":\"Wagner\",\"column2\":\"ん、なんだ？何か用があるなら早く言え。\",\"id\":11},{\"column1\":\"Wagner\",\"column2\":\"ん、なんだ？ 用があるなら早く言え。\",\"id\":12},{\"column1\":\"Wagner\",\"column2\":\"ん、なんだ？お前、何か用か？早く言え。\",\"id\":13},{\"column1\":\"Wagner\",\"column2\":\"ん、なんだ？ 用があるなら早く言え。\",\"id\":14},{\"column1\":\"Wagner\",\"column2\":\"ん、なんだ？ お前、何か用か？\",\"id\":15},{\"column1\":\"Wagner\",\"column2\":\"ん、なんだ？ 用があるなら早く言え。時間がないんだからな。\",\"id\":16},{\"column1\":\"Wagner\",\"column2\":\"ん、なんだ？用があるなら早く言え。\",\"id\":17},{\"column1\":\"Wagner\",\"column2\":\"ん、なんだ？何か用か？\",\"id\":18}]");
+
+
+            // 他のjsonファイルについても同様にdataMapに追加していく
+
             for (String filename : filenames) {
                 try {
                     // ファイルパスを作成
-                    File file = new File(path.toFile(), filename);
+                    Path filePath = Path.of(path.toFile().getAbsolutePath(), filename);
 
                     // ディレクトリが存在しない場合は作成
-                    if (!file.getParentFile().exists()) {
-                        file.getParentFile().mkdirs();
+                    if (!filePath.getParent().toFile().exists()) {
+                        Files.createDirectories(filePath.getParent());
                     }
 
-                    // FileWriterオブジェクトを作成して空のJSONファイルを生成
-                    FileWriter fileWriter = new FileWriter(file);
+                    // JSONオブジェクトを書き込み
+                    String jsonData = dataMap.get(filename);
+                    if (jsonData == null) {
+                        jsonData = "{}";
+                    }
 
-                    // 空のJSONオブジェクトを書き込み
-                    fileWriter.write("{}");
-
-                    // ファイルを閉じる
-                    fileWriter.close();
+                    // Files.writeStringを利用してUTF-8エンコーディングで書き込む
+                    Files.writeString(filePath, jsonData, StandardCharsets.UTF_8);
 
                     commandSender.sendMessage(filename + " was created.");
 
@@ -165,6 +193,7 @@ public class SetUP implements CommandExecutor {
                     e.printStackTrace();
                 }
             }
+
             for (String filename : filenames2) {
                 try {
                     // ファイルパスを作成

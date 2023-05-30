@@ -15,10 +15,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ChatGPTTalkNPC implements Listener {
 
@@ -38,6 +35,17 @@ public class ChatGPTTalkNPC implements Listener {
                 Player player = event.getClicker();
                 NPC npc = event.getNPC();
                 String npcName = npc.getName();
+
+                String[] validNames = {"Ellis", "Marshier", "Mirai", "Raisers", "Rasvaan", "Rina", "Wagner"};
+                boolean isValidName = Arrays.asList(validNames).contains(npcName);
+
+                if (!isValidName) {
+                    return;
+                }
+
+
+
+
 
                 String jsonFilePath = "plugins/ChatGPTForMinecraft/TalkData/" + npcName + "TalkData.json";
 
