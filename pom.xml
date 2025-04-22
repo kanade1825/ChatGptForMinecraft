@@ -13,6 +13,8 @@
 
     <properties>
         <java.version>17</java.version>
+        <!-- Gemini クライアントのバージョン -->
+        <generativelanguage.version>1.0.0</generativelanguage.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -71,6 +73,11 @@
             <url>https://repo.codemc.org/repository/maven-public/</url>
             <layout>default</layout>
         </repository>
+        <!-- 追加：Maven Central を明示 -->
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
     </repositories>
 
 
@@ -124,6 +131,12 @@
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!-- Google Gen AI Java SDK (Gemini / Vertex AI) -->
+        <dependency>
+              <groupId>com.google.genai</groupId>
+              <artifactId>google-genai</artifactId>
+              <version>0.4.0</version>
         </dependency>
 
 
